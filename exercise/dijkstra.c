@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-#include "randomNumberGen.h"
 
 #define V 9
 
