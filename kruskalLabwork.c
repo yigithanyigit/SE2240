@@ -89,7 +89,7 @@ char *createUniques(Graph *graph)
     {
         for (size_t i = 0; i < letterSize - 1; i++)
         {
-            if (strcmp(&letter[i], &letter[i + 1]) == 1)
+            if (strcmp(&letter[i], &letter[i + 1]) < 1)
             {
                 int temp = letter[i];
                 letter[i] = letter[i + 1];
@@ -109,7 +109,7 @@ char *createUniques(Graph *graph)
         if (letter[i] != letter[i + 1])
         {
             uniques[q] = letter[i];
-            uniques = realloc(uniques, i);
+            uniques = realloc(uniques, i + 1);
             q++;
         }
     }
