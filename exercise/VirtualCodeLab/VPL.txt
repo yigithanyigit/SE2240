@@ -1,0 +1,41 @@
+Let's call the positive numbers whose prime divisors are limited to 3 and 5  İzmir Number. 
+İzmir Numbers: 3, 5, 9, 15, 25, 27, 45, ...
+
+Write a function that takes an integer N as a parameter and returns the Nth Izmir number. 
+
+Limits:
+
+ 0 < n < 141
+
+
+
+
+
+
+
+
+
+"
+#include "stdio.h"
+
+
+// Implement your solution in this function
+int izmirNumber(int n)
+{
+    
+    // Write your code here
+    
+    
+    return 0; // return the answer
+}
+
+
+
+// !!! DO NOT CHANGE main function! It will test your solution.
+int main()
+{
+    int n;
+    scanf("%d",&n);
+    printf("%d",izmirNumber(n));
+}
+"

@@ -1,7 +1,8 @@
 #include "kruskal.h"
 #include "prims.h"
 
-GRAPH createGraph() {
+GRAPH createGraph()
+{
 	GRAPH graph = graph_init(16);
 	graph_addEdge(graph, 0, 1, 5);
 	graph_addEdge(graph, 0, 5, 9);
@@ -29,53 +30,69 @@ GRAPH createGraph() {
 	return graph;
 }
 
-void testKruskal() {
+void testKruskal()
+{
 	printf("--------------------------------\n");
 	printf("   .:: START KRUSKAL TEST ::.\n\n\n");
-	
+
 	printf("Graph:\n");
 	GRAPH graph = createGraph();
 	graph_print(graph);
-	
+
 	GRAPH mst = kruskal(graph);
 	printf("MST:\n");
 	graph_print(mst);
-	
+
 	printf("\n    .:: END KRUSKAL TEST ::.\n");
 	printf("--------------------------------\n\n\n");
 }
 
-void testPrims() {
+void testPrims()
+{
 	printf("--------------------------------\n");
 	printf("   .:: START PRIMS TEST ::.\n\n\n");
-	
+
 	printf("Graph:\n");
 	GRAPH graph = createGraph();
 	graph_print(graph);
-	
+
 	GRAPH mst = prims(graph);
 	printf("MST:\n");
 	graph_print(mst);
-	
+
 	printf("\n    .:: END PRIMS TEST ::.\n");
 	printf("--------------------------------\n\n\n");
 }
 
-void comparison() {
+void comparison()
+{
 	printf("--------------------------------\n");
 	printf("   .:: START COMPARISON ::.\n\n");
-	
+
 	// TODO: You can do your comparison here.
-	
-	
+
+    clock_t t, t2;
+    
+
+	GRAPH graph = createGraph();
+	t = clock();
+	GRAPH mst = kruskal(graph);
+	t = clock() - t;
+	printf("Kruskal: %.30f\n", (double)t / CLOCKS_PER_SEC );
+
+	t2 = clock();
+	mst = prims(graph);
+	t2 = clock() - t2;
+	printf("Prims: %.30f\n", (double)t2 / CLOCKS_PER_SEC);
+
 	printf("\n\n    .:: END COMPARISON ::.\n");
 	printf("--------------------------------\n");
 }
- 
-int main() {
+
+int main()
+{
 	testKruskal();
 	testPrims();
 	comparison();
 	return 0;
 }
-
