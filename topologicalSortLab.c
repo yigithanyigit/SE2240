@@ -77,29 +77,88 @@ void list_print(LINKED_LIST list)
 
 void dfs(int graph[][SIZE], int visited[SIZE], int node, LINKED_LIST list)
 {
-    // We do N iteration, N is number of vertices also we do this for E times which E is edge so final Big-O is 
+    // We do N iteration, N is number of vertices also we do this for E times which E is edge so final Big-O is
     // O(EV) == O(N)
     int counter = 0;
     for (int i = 0; i < NUMBER_OF_VERTICES; i++) // O(N + 1)
     {
         if (graph[node][i] == 1 && visited[i] == 0) // O(1)
         {
-            counter += 1;   // O(1) 
-            dfs(graph, visited, i, list);  // O(1)
+            counter += 1;                 // O(1)
+            dfs(graph, visited, i, list); // O(1)
         }
     }
     if (visited[node] == 0) // O(1)
     {
         int *key = malloc(sizeof(int)); // O(1)
-        *key = node + 1; // O(1)
-        list_prepend(list, key); // O(1)
-        visited[node] = 1; // O(1)
+        *key = node + 1;                // O(1)
+        list_prepend(list, key);        // O(1)
+        visited[node] = 1;              // O(1)
     }
     return;
 }
+
+void topSortDfs(int graph[][SIZE], int visited[SIZE], int node, LINKED_LIST list)
+{
+    /* GIVE EVERY NODE AS STARTER NODE*/
+    for (int i = 0; i < NUMBER_OF_VERTICES; i++)
+    {
+        dfs(graph, visited, i, list);
+    }
+}
+
+void sourceRemoval(int graph[][SIZE], int visited[SIZE], int indegree[SIZE], LINKED_LIST list)
+{
+    // We do N iteration, N is number of vertices also we do this for E times which E is edge so final Big-O is
+    // O(V + V^2) = O(V^2)
+    for (int i = 0; i < NUMBER_OF_VERTICES; i++)
+    {
+        for (int j = 0; j < NUMBER_OF_VERTICES; j++)
+        {
+            indegree[i] += graph[j][i];
+        }
+        // printf("%d ", indegree[i]);
+    }
+
+    int numVisitedVertices = 0;
+    while (numVisitedVertices <= 0) // O(N + 1)
+    {
+        for (int i = 0; i < NUMBER_OF_VERTICES; i++) // O(N + 1)
+        {
+            if (indegree[i] == 0 && visited[i] == 0)
+            {
+                numVisitedVertices++; // O(1)
+                int *key = malloc(sizeof(int)); // O(1)
+                *key = i + 1;                   // O(1)
+                visited[i] = 1; // O(1)
+                list_append_last(list, key); // O(1)
+
+                for (int j = 0; j < NUMBER_OF_VERTICES; j++) // O(N + 1)
+                {
+                    if (graph[i][j] == 1) // O(1)
+                    {
+                        indegree[j]--; // O(1)
+                    }
+                }
+                /**
+                 * Print Degrees
+                 *
+                 */
+                /*
+                printf("\n");
+                for (int q = 0; q < NUMBER_OF_VERTICES; q++)
+                {
+                    printf("%d ", indegree[q]);
+                }
+                */
+            }
+        }
+    }
+}
+
 int main()
 {
-
+    // int matrix[SIZE][SIZE] = {{0,1,1,0}, {0,0,0,1}, {0,0,0,1}, {0,0,0,0}};
     int matrix[SIZE][SIZE] = {
         {0, 0, 1, 1, 1, 0, 0, 0},
         {0, 0, 1, 0, 0, 0, 0, 0},
@@ -110,21 +169,23 @@ int main()
         {0, 0, 0, 0, 0, 0, 0, 1},
         {0, 0, 0, 0, 0, 0, 0, 0},
     };
-    int visited[SIZE];
+    int visited1[SIZE], visited2[SIZE], indegree[SIZE];
     for (int i = 0; i < SIZE; i++)
     {
-        visited[i] = 0;
+        visited1[i] = 0;
+        visited2[i] = 0;
+        indegree[i] = 0;
     }
 
     LINKED_LIST list = list_init();
+    LINKED_LIST list2 = list_init();
 
-    /* GIVE EVERY NODE AS STARTER NODE*/
-    for (int i = 0; i < NUMBER_OF_VERTICES; i++)
-    {
-        dfs(matrix, visited, i, list);
-    }
-    
+    topSortDfs(matrix, visited1, 0, list);
+    sourceRemoval(matrix, visited2, indegree, list2);
 
+    printf("\n");
+    list_print(list2);
+    printf("\n");
     list_print(list);
 
     return 0;
